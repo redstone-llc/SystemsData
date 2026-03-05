@@ -2,22 +2,15 @@
 
 package llc.redstone.systemsdata
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import llc.redstone.systemsdata.ScopeType.*
 import llc.redstone.systemsdata.enums.Enchantment
 import llc.redstone.systemsdata.enums.Events
 import llc.redstone.systemsdata.enums.Lobby
 import llc.redstone.systemsdata.enums.PotionEffect
 import llc.redstone.systemsdata.enums.Sound
-import net.benwoodworth.knbt.NbtCompound
 
 sealed class Action(
     @Transient private val actionName: String = ""
@@ -935,18 +928,6 @@ interface KeyedCycle: Keyed
 
 interface KeyedLabeled : Keyed {
     val label: String
-}
-
-object KeyedSerializer : KSerializer<Keyed> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Keyed", PrimitiveKind.STRING)
-
-    override fun deserialize(decoder: Decoder): Keyed {
-        TODO("not implemented!")
-    }
-
-    override fun serialize(encoder: Encoder, value: Keyed) {
-        encoder.encodeString(value.key)
-    }
 }
 
 data class ItemStack(

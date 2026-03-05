@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.benwoodworth.knbt:knbt:0.11.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 }
 
 publishing {
