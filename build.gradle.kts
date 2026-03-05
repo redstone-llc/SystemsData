@@ -1,10 +1,21 @@
 plugins {
-    kotlin("jvm") version "2.2.21"
+    kotlin("jvm") version "2.2.10"
     `maven-publish`
 }
 
 group = "llc.redstone"
-version = "1.0-SNAPSHOT"
+version = "1.0.1"
+
+java {
+    withSourcesJar()
+    val javaVersion: JavaVersion = JavaVersion.VERSION_21
+    targetCompatibility = javaVersion
+    sourceCompatibility = javaVersion
+}
+
+kotlin {
+    jvmToolchain(21)
+}
 
 repositories {
     mavenCentral()
@@ -19,7 +30,7 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             groupId = project.group.toString()
-            artifactId = "SystemsAPI"
+            artifactId = "SystemsData"
             version = project.version.toString()
         }
     }

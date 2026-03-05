@@ -2,7 +2,6 @@ package llc.redstone.systemsdata
 
 import llc.redstone.systemsdata.enums.Events
 
-
 @Target(AnnotationTarget.CLASS)
 annotation class ActionDefinition(
     val displayName: String,

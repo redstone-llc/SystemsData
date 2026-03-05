@@ -13,10 +13,10 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import llc.redstone.systemsdata.ScopeType.*
 import llc.redstone.systemsdata.enums.Enchantment
+import llc.redstone.systemsdata.enums.Events
 import llc.redstone.systemsdata.enums.Lobby
 import llc.redstone.systemsdata.enums.PotionEffect
 import llc.redstone.systemsdata.enums.Sound
-import llc.redstone.systemsdata.enums.Events
 import net.benwoodworth.knbt.NbtCompound
 
 sealed class Action(
@@ -950,7 +950,7 @@ object KeyedSerializer : KSerializer<Keyed> {
 }
 
 data class ItemStack(
-    val nbt: NbtCompound? = null,
+    val nbt: String? = null,
     val relativeFileLocation: String,
 )
 
