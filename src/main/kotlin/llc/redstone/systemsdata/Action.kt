@@ -31,7 +31,7 @@ sealed class Action(
         ]
     )
     data class Conditional(
-        val conditions: List<Condition>,
+        val conditions: List<Condition> = emptyList(),
         val matchAnyCondition: Boolean = false,
         val ifActions: List<Action> = emptyList(),
         val elseActions: List<Action> = emptyList(),
@@ -67,7 +67,7 @@ sealed class Action(
         ]
     )
     data class ChangePlayerGroup(
-        @property:Pagination val newGroup: String?,
+        @property:Pagination val newGroup: String? = null,
         val includeHigherGroups: Boolean = true,
     ) : Action("CHANGE_PLAYER_GROUP")
 
@@ -123,8 +123,8 @@ sealed class Action(
         ]
     )
     data class DisplayTitle(
-        val title: String,
-        val subtitle: String,
+        val title: String = "Hello World!",
+        val subtitle: String = "",
         val fadeIn: Int = 1,
         val stay: Int = 5,
         val fadeOut: Int = 1,
@@ -148,7 +148,9 @@ sealed class Action(
             ])
         ]
     )
-    data class DisplayActionBar(val message: String) : Action("ACTION_BAR")
+    data class DisplayActionBar(
+        val message: String = "Hello World!"
+    ) : Action("ACTION_BAR")
 
     @ActionDefinition(
         displayName = "Reset Inventory",
@@ -189,8 +191,8 @@ sealed class Action(
         ]
     )
     data class ChangeMaxHealth(
-        val amount: Double,
-        val op: StatOp,
+        val amount: Double = 20.0,
+        val op: StatOp = StatOp.Set,
         val healOnChange: Boolean = true,
     ) : Action("CHANGE_MAX_HEALTH")
 
@@ -232,9 +234,9 @@ sealed class Action(
         ]
     )
     data class GiveItem(
-        val item: ItemStack?,
+        val item: ItemStack? = null,
         val allowMultiple: Boolean = false,
-        val inventorySlot: InventorySlot?,
+        val inventorySlot: InventorySlot? = null,
         val replaceExistingItem: Boolean = false,
     ) : Action("GIVE_ITEM")
 
@@ -255,7 +257,7 @@ sealed class Action(
             ])
         ]
     )
-    data class RemoveItem(val item: ItemStack?) : Action("REMOVE_ITEM")
+    data class RemoveItem(val item: ItemStack? = null) : Action("REMOVE_ITEM")
 
     @ActionDefinition(
         displayName = "Send a Chat Message",
@@ -275,7 +277,7 @@ sealed class Action(
             ])
         ]
     )
-    data class SendMessage(val message: String) : Action("SEND_MESSAGE")
+    data class SendMessage(val message: String = "Hello!") : Action("SEND_MESSAGE")
 
     @ActionDefinition(
         displayName = "Apply Potion Effect",
@@ -296,7 +298,7 @@ sealed class Action(
         ]
     )
     data class ApplyPotionEffect(
-        val effect: PotionEffect?,
+        val effect: PotionEffect? = null,
         val duration: Int = 60,
         val level: Int = 1,
         @SerialName("override_existing_effects")
@@ -343,7 +345,7 @@ sealed class Action(
             ])
         ]
     )
-    data class GiveExperienceLevels(val levels: Int) : Action("GIVE_EXP_LEVELS")
+    data class GiveExperienceLevels(val levels: Int = 1) : Action("GIVE_EXP_LEVELS")
 
     @ActionDefinition(
         displayName = "Send to Lobby",
@@ -356,7 +358,7 @@ sealed class Action(
             Scope(ITEM)
         ]
     )
-    data class SendToLobby(val location: Lobby) : Action("SEND_TO_LOBBY")
+    data class SendToLobby(val location: Lobby? = null) : Action("SEND_TO_LOBBY")
 
     @ActionDefinition(
         displayName = "Change Variable",
@@ -399,8 +401,8 @@ sealed class Action(
         ]
     )
     data class PlayerVariable(
-        val variable: String,
-        val op: StatOp,
+        val variable: String = "Kills",
+        val op: StatOp = StatOp.Inc,
         val amount: StatValue? = null,
         val unset: Boolean = false
     ) : ChangeVariable(VariableHolder.Player)
@@ -424,9 +426,9 @@ sealed class Action(
         ]
     )
     class TeamVariable(
-        @property:Pagination val teamName: String,
-        val variable: String,
-        val op: StatOp,
+        @property:Pagination val teamName: String? = null,
+        val variable: String = "Kills",
+        val op: StatOp = StatOp.Inc,
         val amount: StatValue? = null,
         val unset: Boolean = false
     ) : ChangeVariable(VariableHolder.Team)
@@ -450,8 +452,8 @@ sealed class Action(
         ]
     )
     data class GlobalVariable(
-        val variable: String,
-        val op: StatOp,
+        val variable: String = "Kills",
+        val op: StatOp = StatOp.Inc,
         val amount: StatValue? = null,
         val unset: Boolean = false
     ) : ChangeVariable(VariableHolder.Global)
@@ -475,7 +477,7 @@ sealed class Action(
         ]
     )
     data class TeleportPlayer(
-        val location: Location?,
+        val location: Location? = null,
         val preventInsideBlocks: Boolean = false,
     ) : Action("TELEPORT_PLAYER")
 
@@ -497,7 +499,9 @@ sealed class Action(
             ])
         ]
     )
-    data class FailParkour(val reason: String) : Action("FAIL_PARKOUR")
+    data class FailParkour(
+        val reason: String = "Failed!"
+    ) : Action("FAIL_PARKOUR")
 
     @ActionDefinition(
         displayName = "Play Sound",
@@ -518,10 +522,10 @@ sealed class Action(
         ]
     )
     data class PlaySound(
-        val sound: Sound?,
+        val sound: Sound? = null,
         val volume: Double = 0.7,
         val pitch: Double = 1.0,
-        val location: Location?,
+        val location: Location? = null,
     ) : Action("PLAY_SOUND")
 
     @ActionDefinition(
@@ -542,7 +546,9 @@ sealed class Action(
             ])
         ]
     )
-    data class SetCompassTarget(val location: Location?) : Action("SET_COMPASS_TARGET")
+    data class SetCompassTarget(
+        val location: Location? = null
+    ) : Action("SET_COMPASS_TARGET")
 
     @ActionDefinition(
         displayName = "Set Gamemode",
@@ -562,7 +568,9 @@ sealed class Action(
             ])
         ]
     )
-    data class SetGameMode(val gamemode: GameMode) : Action("SET_GAMEMODE")
+    data class SetGameMode(
+        val gamemode: GameMode? = null
+    ) : Action("SET_GAMEMODE")
 
     @ActionDefinition(
         displayName = "Change Health",
@@ -583,8 +591,8 @@ sealed class Action(
         ]
     )
     data class ChangeHealth(
-        val amount: Double,
-        val op: StatOp,
+        val amount: Double = 20.0,
+        val op: StatOp = StatOp.Set,
     ) : Action("CHANGE_HEALTH")
 
     @ActionDefinition(
@@ -606,8 +614,8 @@ sealed class Action(
         ]
     )
     data class ChangeHunger(
-        val amount: Double,
-        val op: StatOp,
+        val amount: Double = 20.0,
+        val op: StatOp = StatOp.Set,
     ) : Action("CHANGE_HUNGER")
 
     @ActionDefinition(
@@ -637,7 +645,7 @@ sealed class Action(
         ]
     )
     data class RandomAction(
-        val actions: List<Action>,
+        val actions: List<Action> = emptyList(),
     ) : Action("RANDOM_ACTION")
 
     @ActionDefinition(
@@ -658,7 +666,10 @@ sealed class Action(
             ])
         ]
     )
-    data class ExecuteFunction(@property:Pagination val name: String, val global: Boolean = false) : Action("TRIGGER_FUNCTION")
+    data class ExecuteFunction(
+        @property:Pagination val name: String? = null,
+        val global: Boolean = false
+    ) : Action("TRIGGER_FUNCTION")
 
     @ActionDefinition(
         displayName = "Apply Inventory Layout",
@@ -678,7 +689,9 @@ sealed class Action(
             ])
         ]
     )
-    data class ApplyInventoryLayout(@property:Pagination val layout: String) : Action("APPLY_LAYOUT")
+    data class ApplyInventoryLayout(
+        @property:Pagination val layout: String? = null
+    ) : Action("APPLY_LAYOUT")
 
     @ActionDefinition(
         displayName = "Exit",
@@ -708,7 +721,7 @@ sealed class Action(
         ]
     )
     data class EnchantHeldItem(
-        val enchantment: Enchantment,
+        val enchantment: Enchantment? = null,
         val level: Int = 1,
     ) : Action("ENCHANT_HELD_ITEM")
     
@@ -730,7 +743,9 @@ sealed class Action(
             ])
         ]
     )
-    data class PauseExecution(val ticks: Int) : Action("PAUSE")
+    data class PauseExecution(
+        val ticks: Int = 20
+    ) : Action("PAUSE")
 
     @ActionDefinition(
         displayName = "Set Player Team",
@@ -750,7 +765,9 @@ sealed class Action(
             ])
         ]
     )
-    data class SetPlayerTeam(@property:Pagination val team: String) : Action("SET_PLAYER_TEAM")
+    data class SetPlayerTeam(
+        @property:Pagination val team: String? = null
+    ) : Action("SET_PLAYER_TEAM")
 
     @ActionDefinition(
         displayName = "Display Menu",
@@ -770,7 +787,9 @@ sealed class Action(
             ])
         ]
     )
-    data class DisplayMenu(@property:Pagination val menu: String) : Action("DISPLAY_MENU")
+    data class DisplayMenu(
+        @property:Pagination val menu: String? = null
+    ) : Action("DISPLAY_MENU")
 
     @ActionDefinition(
         displayName = "Close Menu",
@@ -799,8 +818,8 @@ sealed class Action(
         ]
     )
     data class DropItem(
-        val item: ItemStack?,
-        val location: Location?,
+        val item: ItemStack? = null,
+        val location: Location? = null,
         val dropNaturally: Boolean = true,
         val disableMerging: Boolean = false,
         val despawnDurationTicks: Int = 6000,
@@ -828,9 +847,9 @@ sealed class Action(
         ]
     )
     data class ChangeVelocity(
-        val x: Double,
-        val y: Double,
-        val z: Double,
+        val x: Double = 10.0,
+        val y: Double = 10.0,
+        val z: Double = 10.0,
     ) : Action("CHANGE_VELOCITY")
 
     @ActionDefinition(
@@ -852,7 +871,7 @@ sealed class Action(
         ]
     )
     data class LaunchToTarget(
-        val location: Location?,
+        val location: Location? = null,
         val strength: Double = 2.0
     ) : Action("LAUNCH_TO_TARGET")
 
@@ -874,7 +893,9 @@ sealed class Action(
             ])
         ]
     )
-    data class SetPlayerWeather(val weather: Weather) : Action("SET_PLAYER_WEATHER")
+    data class SetPlayerWeather(
+        val weather: Weather? = null
+    ) : Action("SET_PLAYER_WEATHER")
 
     @ActionDefinition(
         displayName = "Set Player Time",
@@ -894,7 +915,9 @@ sealed class Action(
             ])
         ]
     )
-    data class SetPlayerTime(val time: Time) : Action("SET_PLAYER_TIME")
+    data class SetPlayerTime(
+        val time: Time = Time.ResetToWorldTime
+    ) : Action("SET_PLAYER_TIME")
 
     @ActionDefinition(
         displayName = "Toggle Nametag Display",
@@ -914,7 +937,9 @@ sealed class Action(
             ])
         ]
     )
-    data class ToggleNametagDisplay(val displayNametag: Boolean) : Action("TOGGLE_NAMETAG_DISPLAY")
+    data class ToggleNametagDisplay(
+        val displayNametag: Boolean = true
+    ) : Action("TOGGLE_NAMETAG_DISPLAY")
 }
 
 interface Keyed {

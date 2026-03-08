@@ -8,6 +8,11 @@ import kotlinx.serialization.Transient
 import llc.redstone.systemsdata.enums.Permission
 import llc.redstone.systemsdata.enums.PotionEffect
 
+import llc.redstone.systemsdata.FishingEnvironment as FishingEnv
+import llc.redstone.systemsdata.PortalType as Portal
+import llc.redstone.systemsdata.DamageCause as Damage
+
+
 /*
 Borrowed from https://github.com/sndyx/hsl, licensed under the MIT License
  */
@@ -20,10 +25,10 @@ sealed class Condition(
 
     @DisplayName("Required Group")
     data class RequiredGroup(
-        @SerialName("required_group")
-        @property:Pagination val group: String,
-        @SerialName("include_higher_groups")
-        val includeHigherGroups: Boolean,
+        
+        @property:Pagination val group: String? = null,
+        
+        val includeHigherGroups: Boolean = false,
     ) : Condition("IN_GROUP")
 
     @DisplayName("Variable Requirement")
@@ -33,46 +38,46 @@ sealed class Condition(
 
     @DisplayName("Variable Requirement")
     data class PlayerVariableRequirement(
-        val variable: String,
-        val op: Comparison,
-        val value: StatValue,
+        val variable: String = "Kills",
+        val op: Comparison = Comparison.Eq,
+        val value: StatValue? = null,
         val fallbackValue: StatValue? = null,
     ) : VariableRequirement(VariableHolder.Player)
 
     @DisplayName("Variable Requirement")
     data class TeamVariableRequirement(
         @property:Pagination val team: String?,
-        val variable: String,
-        val op: Comparison,
-        val value: StatValue,
+        val variable: String = "Kills",
+        val op: Comparison = Comparison.Eq,
+        val value: StatValue? = null,
         val fallbackValue: StatValue? = null
     ) : VariableRequirement(VariableHolder.Team)
 
     @DisplayName("Variable Requirement")
     data class GlobalVariableRequirement(
-        val variable: String,
-        val op: Comparison,
-        val value: StatValue,
+        val variable: String = "Kills",
+        val op: Comparison = Comparison.Eq,
+        val value: StatValue? = null,
         val fallbackValue: StatValue? = null
     ) : VariableRequirement(VariableHolder.Global)
 
     @DisplayName("Required Permission")
     data class HasPermission(
-        @SerialName("required_permission")
-        val permission: Permission,
+        
+        val permission: Permission? = null,
     ) : Condition("HAS_PERMISSION")
 
     @DisplayName("Within Region")
     data class InRegion(
-        @property:Pagination val region: String,
+        @property:Pagination val region: String? = null,
     ) : Condition("IN_REGION")
 
     @DisplayName("Has Item")
     data class HasItem(
-        val item: ItemStack?,
-        @SerialName("what_to_check") val whatToCheck: ItemCheck,
-        @SerialName("where_to_check") val whereToCheck: InventoryLocation,
-        @SerialName("required_amount") val amount: ItemAmount,
+        val item: ItemStack? = null,
+        val whatToCheck: ItemCheck = ItemCheck.Metadata,
+        val whereToCheck: InventoryLocation = InventoryLocation.Anywhere,
+        val amount: ItemAmount = ItemAmount.Any,
     ) : Condition("HAS_ITEM")
 
     @DisplayName("Doing Parkour")
@@ -80,7 +85,7 @@ sealed class Condition(
 
     @DisplayName("Has Potion Effect")
     data class RequiredEffect(
-        val effect: PotionEffect,
+        val effect: PotionEffect? = null,
     ) : Condition("POTION_EFFECT")
 
     @DisplayName("Player Sneaking")
@@ -91,39 +96,37 @@ sealed class Condition(
 
     @DisplayName("Player Health")
     data class RequiredHealth(
-        val mode: Comparison,
-        val amount: Double,
+        val mode: Comparison = Comparison.Eq,
+        val amount: Double? = null,
     ) : Condition("HEALTH")
 
     @DisplayName("Max Player Health")
     data class RequiredMaxHealth(
-        val mode: Comparison,
-        val amount: Double,
+        val mode: Comparison = Comparison.Eq,
+        val amount: Double? = null,
     ) : Condition("MAX_HEALTH")
 
     @DisplayName("Player Hunger")
     data class RequiredHungerLevel(
-        val mode: Comparison,
-        val amount: Double,
+        val mode: Comparison = Comparison.Eq,
+        val amount: Double? = null,
     ) : Condition("HUNGER_LEVEL")
 
     @DisplayName("Required Gamemode")
     data class RequiredGameMode(
-        @SerialName("required_gamemode")
-        val gameMode: GameMode
+        val gameMode: GameMode? = null
     ) : Condition("GAMEMODE")
 
     @DisplayName("Placeholder Number Requirement")
     data class RequiredPlaceholderNumber(
-        val placeholder: String,
-        val mode: Comparison,
-        val amount: StatValue,
+        val placeholder: String? = null,
+        val mode: Comparison = Comparison.Eq,
+        val amount: StatValue? = null,
     ) : Condition("PLACEHOLDER_NUMBER")
 
     @DisplayName("Required Team")
     data class RequiredTeam(
-        @SerialName("required_team")
-        @property:Pagination val team: String,
+        @property:Pagination val team: String? = null,
     ) : Condition("IN_TEAM")
 
     @DisplayName("Pvp Enabled")
@@ -131,39 +134,37 @@ sealed class Condition(
 
     @DisplayName("Fishing Environment")
     data class FishingEnvironment(
-        val environment: llc.redstone.systemsdata.FishingEnvironment
+        val environment: FishingEnv = FishingEnv.Water
     ) : Condition("FISHING_ENVIRONMENT")
 
     @DisplayName("Portal Type")
     data class PortalType(
-        @SerialName("portal_type")
-        val type: llc.redstone.systemsdata.PortalType
+        val type: Portal = Portal.NetherPortal
     ) : Condition("PORTAL_TYPE")
 
     @DisplayName("Damage Cause")
     data class DamageCause(
-        val cause: llc.redstone.systemsdata.DamageCause
+        val cause: Damage? = null
     ) : Condition("DAMAGE_CAUSE")
 
     @DisplayName("Damage Amount")
     data class RequiredDamageAmount(
-        val mode: Comparison,
-        val amount: StatValue,
+        val mode: Comparison = Comparison.Eq,
+        val amount: StatValue? = null,
     ) : Condition("DAMAGE_AMOUNT")
 
     @DisplayName("Block Type")
     data class BlockType(
-        val item: ItemStack?,
-        @SerialName("match_type_only")
-        val matchTypeOnly: Boolean,
+        val item: ItemStack? = null,
+        val matchTypeOnly: Boolean = false,
     ) : Condition("BLOCK_TYPE")
 
     @DisplayName("Is Item")
     data class IsItem(
-        val item: ItemStack?,
-        @SerialName("what_to_check") val whatToCheck: ItemCheck,
-        @SerialName("where_to_check") val whereToCheck: InventoryLocation,
-        @SerialName("required_amount") val amount: ItemAmount,
+        val item: ItemStack? = null,
+        val whatToCheck: ItemCheck = ItemCheck.Metadata,
+        val whereToCheck: InventoryLocation = InventoryLocation.Anywhere,
+        val amount: ItemAmount = ItemAmount.Any,
     ) : Condition("IS_ITEM")
 }
 
@@ -222,7 +223,7 @@ enum class FishingEnvironment(override val key: String) : Keyed {
     Lava("Lava");
 
     companion object {
-        fun fromKey(key: String): FishingEnvironment? {
+        fun fromKey(key: String): FishingEnv? {
             return entries.find { it.key.equals(key, ignoreCase = true) }
         }
     }
@@ -233,7 +234,7 @@ enum class PortalType(override val key: String) : Keyed {
     NetherPortal("Nether Portal");
 
     companion object {
-        fun fromKey(key: String): PortalType? {
+        fun fromKey(key: String): Portal? {
             return entries.find { it.key.equals(key, ignoreCase = true) }
         }
     }
@@ -253,7 +254,7 @@ enum class DamageCause(override val key: String) : Keyed {
     Thorns("Thorns");
 
     companion object {
-        fun fromKey(key: String): DamageCause? {
+        fun fromKey(key: String): Damage? {
             return entries.find { it.key.equals(key, ignoreCase = true) }
         }
     }
