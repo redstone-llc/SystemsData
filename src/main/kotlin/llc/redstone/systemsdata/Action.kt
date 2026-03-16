@@ -191,7 +191,7 @@ sealed class Action(
         ]
     )
     data class ChangeMaxHealth(
-        val amount: Double = 20.0,
+        val amount: StatValue = StatValue.Dbl(20.0),
         val op: StatOp = StatOp.Set,
         val healOnChange: Boolean = true,
     ) : Action("CHANGE_MAX_HEALTH")
@@ -591,7 +591,7 @@ sealed class Action(
         ]
     )
     data class ChangeHealth(
-        val amount: Double = 20.0,
+        val amount: StatValue = StatValue.Dbl(20.0),
         val op: StatOp = StatOp.Set,
     ) : Action("CHANGE_HEALTH")
 
@@ -614,7 +614,7 @@ sealed class Action(
         ]
     )
     data class ChangeHunger(
-        val amount: Double = 20.0,
+        val amount: StatValue = StatValue.Dbl(20.0),
         val op: StatOp = StatOp.Set,
     ) : Action("CHANGE_HUNGER")
 
@@ -847,9 +847,9 @@ sealed class Action(
         ]
     )
     data class ChangeVelocity(
-        val x: Double = 10.0,
-        val y: Double = 10.0,
-        val z: Double = 10.0,
+        val x: StatValue = StatValue.Dbl(10.0),
+        val y: StatValue = StatValue.Dbl(10.0),
+        val z: StatValue = StatValue.Dbl(10.0),
     ) : Action("CHANGE_VELOCITY")
 
     @ActionDefinition(
@@ -1058,6 +1058,9 @@ sealed class StatValue {
         }
 
         fun fromString(str: String, colorStr: String? = null): StatValue {
+            val intValue = str.toIntOrNull()
+            if (intValue != null) return I32(intValue)
+
             val longValue = str.toLongOrNull()
             if (longValue != null) return Lng(longValue)
             if (str.endsWith("L", true)) {
@@ -1065,9 +1068,6 @@ sealed class StatValue {
                 val longValueWithSuffix = longWithoutSuffix.toLongOrNull()
                 if (longValueWithSuffix != null) return Lng(longValueWithSuffix)
             }
-
-            val intValue = str.toIntOrNull()
-            if (intValue != null) return I32(intValue)
 
             val doubleValue = str.toDoubleOrNull()
             if (doubleValue != null) return Dbl(doubleValue)
