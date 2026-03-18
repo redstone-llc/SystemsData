@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.2.10"
     `maven-publish`
+    id("org.jetbrains.dokka") version "2.1.0"
 }
 
 group = "llc.redstone"
