@@ -957,6 +957,7 @@ interface KeyedLabeled : Keyed {
 
 data class ItemStack(
     val nbt: String? = null,
+    val slot: Int? = null,
     val relativeFileLocation: String,
 )
 

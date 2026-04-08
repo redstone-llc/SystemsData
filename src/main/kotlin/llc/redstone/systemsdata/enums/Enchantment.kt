@@ -25,7 +25,9 @@ enum class Enchantment(override val key: String) : Keyed {
     Power("Power"),
     Punch("Punch"),
     Flame("Flame"),
-    Infinity("Infinity");
+    Infinity("Infinity"),
+    LuckOfTheSea("Luck Of The Sea"),
+    Lure("Lure");
 
     companion object {
         fun fromKey(key: String): Enchantment? = entries.find { it.key.equals(key, true) }
