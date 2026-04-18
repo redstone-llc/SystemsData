@@ -940,6 +940,12 @@ sealed class Action(
     data class ToggleNametagDisplay(
         val displayNametag: Boolean = true
     ) : Action("TOGGLE_NAMETAG_DISPLAY")
+
+    class CustomAction(
+        val customKey: String,
+        val parameters: Map<String, Any> = emptyMap(),
+        val function: (Map<String, Any>) -> Unit = { _ -> }
+    ) : Action(customKey)
 }
 
 interface Keyed {
@@ -996,6 +1002,13 @@ sealed class Location(override val key: String): Keyed {
                 pitchStr,
                 yawStr
             ).joinToString(" ")
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Custom) return false
+
+            return other.toString() == toString()
         }
     }
 

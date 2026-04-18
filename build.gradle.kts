@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "llc.redstone"
-version = "1.1.4"
+version = "1.0.0-SNAPSHOT"
 
 java {
     withSourcesJar()
