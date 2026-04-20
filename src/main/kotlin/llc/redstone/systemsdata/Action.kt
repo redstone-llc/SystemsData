@@ -974,8 +974,8 @@ sealed class Location(override val key: String): Keyed {
         val x: Coordinate,
         val y: Coordinate,
         val z: Coordinate,
-        val pitch: Coordinate? = null,
         val yaw: Coordinate? = null,
+        val pitch: Coordinate? = null,
     ) : Location("Custom Coordinates") {
         enum class Type {
             NORMAL, RELATIVE, CARET
@@ -992,15 +992,15 @@ sealed class Location(override val key: String): Keyed {
                 Type.CARET -> "^${coordinate.value ?: ""}"
             }
 
-            val pitchStr = pitch?.let { formatCoordinate(it) }
             val yawStr = yaw?.let { formatCoordinate(it) }
+            val pitchStr = pitch?.let { formatCoordinate(it) }
 
             return listOfNotNull(
                 formatCoordinate(x),
                 formatCoordinate(y),
                 formatCoordinate(z),
+                yawStr,
                 pitchStr,
-                yawStr
             ).joinToString(" ")
         }
 
